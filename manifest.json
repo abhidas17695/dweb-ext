@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Dweb extension",
   "description": "Testing dweb ext",
-  "version": "1.0",
+  "version": "1.1",
   "homepage_url": "https://archive.org/",
   "icons": { 
         "16":"images/icon.png", 
@@ -23,16 +23,14 @@
   ],
   "background": {
     "persistent":true,
-    "scripts": ["scripts/background.js"]
+    "scripts": ["scripts/transports-bundle.js","scripts/objects-bundle.js","scripts/bootloader.js"]
   },
   "web_accessible_resources": [
     "images/insetIcon.svg",
     "images/close.svg",
     "images/logo.gif",
     "images/magnifying-glass.cur",
-    "scripts/dweb-transports-bundle.js",
-    "scripts/dweb-objects-bundle.js",
-    "scripts/bootloader.js",
+    "scripts/redirect.js",
     "fonts/glyphicons-halflings-regular.eot",
     "fonts/glyphicons-halflings-regular.svg",
     "fonts/glyphicons-halflings-regular.ttf",

@@ -49,6 +49,10 @@ function statusupdate(args) {
     // This is only useful until we have the server returning this file for anything under dweb.archive.org
     var searchparams = new URL("https://dweb.archive.org").searchParams;// Original parameters, which includes url if faking
     var verbose = searchparams.get("verbose");
-    main()
+    chrome.webRequest.onCompleted.addListener(function(details) {
+    if(!details.url.startsWith("chrome")){
+        main();
+    }
+}, {urls: ["<all_urls>"], types: ["main_frame"]});
 
 
