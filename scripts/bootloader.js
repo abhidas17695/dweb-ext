@@ -3,12 +3,12 @@ function statusupdate(args) {
         statusdiv = document.getElementById("statusdiv");
         statusdiv.appendChild(DwebObjects.utils.createElement("span", {}, ...arguments));
     }
-    async function main() {
+    async function main(url) {
         await DwebTransports.p_connect({
             statuselement: document.getElementById("statuselement"),
             transports: searchparams.getAll("transport")
         });
-        let orighref = searchparams.get("url") || "https://dweb.archive.org";
+        let orighref = searchparams.get("url") || url ;
         if (!orighref.startsWith("file:///")) {
             //statusupdate("Loading URL: ", orighref);
             let url = new URL(orighref);
@@ -46,13 +46,22 @@ function statusupdate(args) {
     }
 
     // Next few lines need explaining!  If passed an extra parameter url= then it will use that as the URL instead of ...bootloader.html
-    // This is only useful until we have the server returning this file for anything under dweb.archive.org
-    var searchparams = new URL("https://dweb.archive.org").searchParams;// Original parameters, which includes url if faking
-    var verbose = searchparams.get("verbose");
+    // This is only useful until we have the server returning this file for anything under dweb.archive.org   
     chrome.webRequest.onCompleted.addListener(function(details) {
-    if(!details.url.startsWith("chrome")){
-        main();
+        var url=details.url;
+        //var url="https://dweb.archive.org";
+        start(url);
+    }, {urls: ["<all_urls>"], types: ["main_frame"]});
+    var searchparams = null;
+    var verbose = null;
+    function start(url){
+        searchparams = new URL(url).searchParams;
+        verbose = searchparams.get("verbose");
+        if(!url.startsWith("chrome") && (url.startsWith("http://dweb.") || url.startsWith("https://dweb."))){
+            main(url);
+        }
     }
-}, {urls: ["<all_urls>"], types: ["main_frame"]});
-
+        
+    
+    
 

@@ -23255,9 +23255,7 @@ class Leaf extends SmartDict {
                         if (remainder) url.search = url.search + (url.search ? '&' : "") + `${pathatt}=${remainder}`;
                         if (search_supplied) url.search = url.search + (url.search ? '&' : "") + search_supplied;
                         if (verbose) console.log("Bootstrap loading url:", url.href);
-                        //alert(url.href);
                         //window.open(url.href, opentarget); //if opentarget is blank then I think should end this script.
-                        //chrome.tabs.create({url:url.href});
                         chrome.tabs.query({currentWindow:true,active:true},function(tabs){
                            chrome.tabs.executeScript(tabs[0].id, {
                                 file:"scripts/redirect.js"
