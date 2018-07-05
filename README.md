@@ -11,8 +11,8 @@
 * Reload http://www.iskme.org
 
 # Documentation
-** manifest.json declares 3 background scripts running on the same context , executed in order of declaration : 
-`scripts/transports-bundle.js`, `scripts/objects-bundle.js`, `scripts/bootloader.js` **
+__manifest.json declares 3 background scripts running on the same context , executed in order of declaration : 
+`scripts/transports-bundle.js`, `scripts/objects-bundle.js`, `scripts/bootloader.js`__
 
 * In `bootloader.js` any new URL loaded is detected on line 50. The new URL is then passed to the function `start()` 
 * In `start()` , variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` as an argument
