@@ -6,9 +6,10 @@
 * Select the folder containing manifest.json
 
 # Instructions for testing the extension
-* Go to any webpage, for example http://www.iskme.org
+* Go to any https://dweb.archive.org/
 * Reload the extension by clicking the reload button on its panel on chrome://extensions
-* Reload http://www.iskme.org
+* Reload https://dweb.archive.org/
+* Messages will be logged to console of background script
 
 # Documentation
 __manifest.json declares 3 background scripts running on the same context , executed in order of declaration : 

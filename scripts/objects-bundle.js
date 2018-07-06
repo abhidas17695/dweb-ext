@@ -22598,7 +22598,8 @@ Script.prototype.runInContext = function (context) {
 };
 
 Script.prototype.runInThisContext = function () {
-    return eval(this.code); // maybe...
+    //return eval(this.code); // maybe...
+    return Function('"use strict";return (' + this.code + ')')();
 };
 
 Script.prototype.runInNewContext = function (context) {

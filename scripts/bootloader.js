@@ -1,7 +1,7 @@
 function statusupdate(args) {
         console.log(...arguments);
-        statusdiv = document.getElementById("statusdiv");
-        statusdiv.appendChild(DwebObjects.utils.createElement("span", {}, ...arguments));
+        //statusdiv = document.getElementById("statusdiv");
+        //statusdiv.appendChild(DwebObjects.utils.createElement("span", {}, ...arguments));
     }
     async function main(url) {
         await DwebTransports.p_connect({
@@ -10,7 +10,7 @@ function statusupdate(args) {
         });
         let orighref = searchparams.get("url") || url ;
         if (!orighref.startsWith("file:///")) {
-            //statusupdate("Loading URL: ", orighref);
+            statusupdate("Loading URL: ", orighref);
             let url = new URL(orighref);
             let name;
             let pathname = (url.pathname === "/") ? "" : url.pathname; // Remove extraneous / if added by browser
@@ -22,7 +22,7 @@ function statusupdate(args) {
             } else if (pathname.startsWith("/archive.org")) {                  // e.g. https://localhost:4244/archive.org/detais/commu
                 name = ["arc", pathname].join("");                              // arc/archive.org/details/commute
             } else {
-                //statusupdate("Unable to bootstrap ", orighref, " unrecognized pattern");
+                statusupdate("Unable to bootstrap ", orighref, " unrecognized pattern");
                 return;
             }
             const search_supplied = url.search.slice(1); // Skip initial ?
@@ -31,12 +31,12 @@ function statusupdate(args) {
     }
     async function p_bootname(name, {search_supplied=undefined}={}) {
         //document.getElementById("urlorname").value = name;
-        //statusupdate("Resolving name: ",name,);   // Appears after loading
+        statusupdate("Resolving name: ",name,);   // Appears after loading
         try {
             await DwebObjects.Domain.p_resolveAndBoot(name, {search_supplied, verbose})
         } catch(err) {  // If cant resolve to leaf, or boot fails
             console.error("Got error",err);
-            //statusupdate(err.message);
+            statusupdate(err.message);
         }
     }
 
@@ -57,7 +57,7 @@ function statusupdate(args) {
     function start(url){
         searchparams = new URL(url).searchParams;
         verbose = searchparams.get("verbose");
-        if(!url.startsWith("chrome") && (url.startsWith("http://dweb.") || url.startsWith("https://dweb."))){
+        if(!(url.startsWith("chrome")||url.indexOf("dweb.me")>=0) && (url.indexOf("dweb.")>=0)){
             main(url);
         }
     }
