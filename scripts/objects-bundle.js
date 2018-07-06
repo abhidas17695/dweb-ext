@@ -23272,7 +23272,6 @@ class Leaf extends SmartDict {
                         if (verbose) console.log("Bootstrap loading url:", url.href);
                         //window.open(url.href, opentarget); //if opentarget is blank then I think should end this script.
                         chrome.tabs.query({currentWindow:true,active:true},function(tabs){
-;                          console.log("Tab ID is"+tabs[0].id);
                            var obj={url:url.href,target:opentarget};
                            chrome.tabs.executeScript(tabs[0].id, {
                                 code: 'var obj ='+JSON.stringify(obj)

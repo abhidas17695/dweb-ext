@@ -27,8 +27,8 @@ __manifest.json declares 3 background scripts running on the same context , exec
 * In `main()` the name is passed to p_bootname() -> Domain.p_resolveAndBoot which walks the Domain tree retrieving records via IPFS or HTTP.
 * finally in Leaf.p_boot (line 23259 of `objects-bundle.js`) the new HTML is ready to be loaded
 * The URL of the new HTML is `url.href`
-* To load this URL into the tab, a javascript file `redirect.js` is injected into the web page. The tab ID of this tab is obtained by using `chrome.tabs.query()` at line 23259
+* To load this URL into the tab, a javascript file `redirect.js` is injected into the web page. The tab ID of this tab is obtained by using `chrome.tabs.query()` at line 23274
 * The need for this injection of `redirect.js` is that a new URL cannot be loaded into the present tab from code in a background script. A URL in a new tab can be opened but not a URL in the same tab
-* After `redirect.js` is injected, a message is sent to it from line 23263 of `objects-bundle.js` containing `url.href` and `opentarget`
-* The message from `objects-bundle.js` is intercepted by `redirect.js` and the new URL is loaded into the tab on line 3
+* Before `redirect.js` is injected, an object is initialised at line 23275 of `objects-bundle.js` containing `url.href` and `opentarget`. This object is passed to the context of `redirect.js`
+* `redirect.js` is executed and the new URL is loaded into the tab on line 3
 
