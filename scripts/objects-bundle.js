@@ -22598,8 +22598,7 @@ Script.prototype.runInContext = function (context) {
 };
 
 Script.prototype.runInThisContext = function () {
-    //return eval(this.code); // maybe...
-    return Function('"use strict";return (' + this.code + ')')();
+    return eval(this.code); // maybe...
 };
 
 Script.prototype.runInNewContext = function (context) {
@@ -23123,6 +23122,7 @@ const SignatureMixin = function(fieldlist) {
         this.signatures = this.signatures || [];
     };
     this._signable = function(date) {
+        // Note that any of these fields which are undefined will not be in the signable string since JSON.stringify will remove them
         return JSON.stringify({"date": date, signed: utils.keyFilter(this, this.__proto__.fieldlist)});
     };
     this._signSelf = function(keypair) { // Pair of verify
@@ -23135,12 +23135,25 @@ const SignatureMixin = function(fieldlist) {
             signedby: keypair.signingexport()
         })
     };
+    this._verifySig = function(sig) {
+        /*
+        Returns:    true if matches, else false
+         */
+        //(sig.signature === "FAKEFAKEFAKE") ||    // TODO=DOMAIN obviously this is faking verification while testing gateway to archive metadata
+        try {
+            return new KeyPair({key: sig.signedby}).verify(this._signable(sig.date), sig.signature);    // Throws SigningError
+        } catch(err) {
+            console.warn("Invalid signature", err);
+            return false;
+
+        }
+    }
+
     this._verifyOwnSigs = function() { // Pair of sign
         // Return an array of keys that signed this match, caller should check it accepts those keys
         console.debug("WARNING - faking signature verification while testing gateway to archive metadata")
         return this.signatures
-            .filter(sig => ( sig.signature === "FAKEFAKEFAKE"  ||       // TODO=DOMAIN obviously this is faking verification while testing gateway to archive metadata
-                new KeyPair({key: sig.signedby}).verify(this._signable(sig.date), sig.signature)))
+            .filter(sig => this._verifySig(sig))
             .map(sig => sig.signedby);
     };
 
@@ -23255,13 +23268,17 @@ class Leaf extends SmartDict {
                     try {
                         if (remainder) url.search = url.search + (url.search ? '&' : "") + `${pathatt}=${remainder}`;
                         if (search_supplied) url.search = url.search + (url.search ? '&' : "") + search_supplied;
+                        if (verbose) url.search = url.search + (url.search ? '&' : "") + 'verbose=true';
                         if (verbose) console.log("Bootstrap loading url:", url.href);
                         //window.open(url.href, opentarget); //if opentarget is blank then I think should end this script.
                         chrome.tabs.query({currentWindow:true,active:true},function(tabs){
+;                          console.log("Tab ID is"+tabs[0].id);
+                           var obj={url:url.href,target:opentarget};
                            chrome.tabs.executeScript(tabs[0].id, {
-                                file:"scripts/redirect.js"
-                           }); 
-                           chrome.tabs.sendMessage(tabs[0].id, {url:url.href,target:opentarget});
+                                code: 'var obj ='+JSON.stringify(obj)
+                           }, function() {
+                                chrome.tabs.executeScript(tabs[0].id, {file: 'scripts/redirect.js'});
+                           });
                         });
                         return; // Only try and open one - bypasses error throwing
                     } catch(err) {
@@ -23286,7 +23303,7 @@ class Leaf extends SmartDict {
 
 }
 NameMixin.call(Leaf.prototype);
-SignatureMixin.call(Leaf.prototype, ["urls", "name", "expires"]);
+SignatureMixin.call(Leaf.prototype, ["expires", "name", "urls"]);   // Probably need to be in alphabetic order
 SmartDict.table2class["leaf"] = Leaf;
 
 class Domain extends KeyValueTable {
@@ -23382,7 +23399,8 @@ class Domain extends KeyValueTable {
     static async p_rootSet( {verbose=false}={}){
         //TODO-CONFIG put this (and other TODO-CONFIG into config file)
         // [ "contenthash:/contenthash/QmRgvjFsRMNAGstAUZUcBxYsg6zejHFEZfcFzvzV6osPyF" ]; // Prior to 2018-05-22
-        const rootpublicurls = [ 'contenthash:/contenthash/QmRiVND6Ct23jekiS7gA5toD4T7F7RZZ37DzHwzKuhdaN7' ]; // As of 2018-05-22
+        //const rootpublicurls = [ 'contenthash:/contenthash/QmRiVND6Ct23jekiS7gA5toD4T7F7RZZ37DzHwzKuhdaN7' ]; // As of 2018-05-22
+        const rootpublicurls = [ 'contenthash:/contenthash/QmVFh13MW42ksJCCj73SGS5MzKggeyu1DmxsvteDnJPkmk' ]; // As of 2018-07-05
         this.root = await SmartDict.p_fetch(rootpublicurls,  {verbose, timeoutMS: 5000});
     }
 
@@ -23466,6 +23484,7 @@ class Domain extends KeyValueTable {
                             //TODO-ARC change these once dweb.me fixed
                             "details": await Leaf.p_new({urls: ["https://dweb.me/archive/archive.html"], mimetype: "text/html",
                                 metadata: {htmlusesrelativeurls: true, htmlpath: "item"}}, verbose,[], {}),
+                            "examples": await Leaf.p_new({urls: ["https://dweb.me/archive/examples/"], metadata: {htmlpath: "/" }}, verbose, {}),
                             "images": await Leaf.p_new({urls: ["https://dweb.me/archive/images/"], metadata: {htmlpath: "/" }}, verbose, {}),
                             "serve": await Leaf.p_new({urls: ["https://dweb.archive.org/download/"], metadata: {htmlpath: "/" }}, verbose, {}), // Example is in commute.description
                             "metadata": await Domain.p_new({_acl: archiveadminkc, keychain: archiveadminkc}, true, {passphrase: pass2+"/arc/archive.org/metadata"}, verbose, [metadataGateway], {}),
@@ -24021,6 +24040,7 @@ class KeyPair extends SmartDict {
 
          :param name:   String - name of field to set, if "key" then imports, else to SmartDict.__setattr__
          :param value:  Any - stored in field, for key can be urlsafebase64 string, or Uint8Array, or dict in libsodium format above.
+        #Backported to PY 20180703
          */
         let verbose = false;
         if (name === "key") {
@@ -24043,6 +24063,7 @@ class KeyPair extends SmartDict {
             passphrase: A phrase to hash to get a seed
             keygen:     true to generate a new key
             seed:       32 byte string or buffer
+        #Backported to PY 20180703
          */
         let verbose = false;
         if (verbose) console.log("KP._key_setter");
@@ -24144,6 +24165,7 @@ class KeyPair extends SmartDict {
         :param keytype: One of KeyPair.KEYTYPExyz to specify type of key wanted
         :returns:       Dict suitable for storing in _key
          */
+        //Backported to PY 20180703
         let key = {};
         if (sodium.crypto_box_SEEDBYTES !== seed.length) throw new errors.CodingError(`Seed should be ${sodium.crypto_box_SEEDBYTES}, but is ${seed.length}`);
         key.seed = seed;
@@ -24165,7 +24187,8 @@ class KeyPair extends SmartDict {
 
         :param value: "xyz:1234abc" where xyz is one of "NACL PUBLIC, NACL SEED, NACL VERIFY" and 1234bc is a ursafebase64 string
                     Note NACL PRIVATE, NACL SIGNING,  are not yet supported as "NACL SEED" is exported
-         */
+         #Backported to PY 20180703
+        */
         //First tackle standard formats created by exporting functionality on keys
         // Call route is ... data.setter > ...> key.setter > _importkey
         //TODO-BACKPORT - Note fingerprint different from Python - this stores the key, change the Python
@@ -24291,6 +24314,8 @@ class KeyPair extends SmartDict {
 
         :param signable: A signable string
         :return: signature that can be verified with verify
+
+        Backported to Python 20180703
         */
         if (!signable) throw new errors.CodingError("Needs signable");
         if (! this._key.sign.privateKey) {
@@ -24308,6 +24333,8 @@ class KeyPair extends SmartDict {
 
         :param date, url: date (ISO string) and url exactly as signed.
         :param urlb64sig: urlsafebase64 encoded signature
+
+        Backported to Python 20180703
          */
 
         let sig = sodium.from_urlsafebase64(urlb64sig);
@@ -25071,7 +25098,7 @@ const utils = require('./utils'); // Utility functions
 
 class SmartDict {
     /*
-    Subclass of Transport that stores a data structure, usually a single layer Javascript dictionary object.
+    Stores a data structure, usually a single layer Javascript dictionary object.
     SmartDict is intended to support the mechanics of storage and retrieval while being  subclassed to implement functionality
     that understands what the data means.
 

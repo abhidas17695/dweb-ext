@@ -5,11 +5,18 @@
 * Click on 'Load unpacked'
 * Select the folder containing manifest.json
 
+# Instructions for loading the extension in Firefox
+* Download or clone this repo
+* Unzip the downloaded folder
+* Go to about:debugging in Firefox and turn on 'Enable add-on debugging' 
+* Click on 'Load temporary Add-on'
+* Select manifest.json
+
 # Instructions for testing the extension
 * Go to any https://dweb.archive.org/
-* Reload the extension by clicking the reload button on its panel on chrome://extensions
+* Reload the extension by clicking the reload button on its panel on chrome://extensions or about:debugging
 * Reload https://dweb.archive.org/
-* Messages will be logged to console of background script
+* Messages will be logged to console of background script (Click Debug button in Firefox)
 
 # Documentation
 __manifest.json declares 3 background scripts running on the same context , executed in order of declaration : 

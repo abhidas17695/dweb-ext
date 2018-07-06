@@ -57,7 +57,7 @@ function statusupdate(args) {
     function start(url){
         searchparams = new URL(url).searchParams;
         verbose = searchparams.get("verbose");
-        if(!(url.startsWith("chrome")||url.indexOf("dweb.me")>=0) && (url.indexOf("dweb.")>=0)){
+        if(!(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0)){
             main(url);
         }
     }
