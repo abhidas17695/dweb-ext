@@ -13,14 +13,13 @@
 * Select manifest.json
 
 # Instructions for testing the extension
-* Go to any https://dweb.archive.org/
-* Reload the extension by clicking the reload button on its panel on chrome://extensions or about:debugging
-* Reload https://dweb.archive.org/
+* Go to https://www.iskme.org/
+* The page is redirected
 * Messages will be logged to console of background script (Click Debug button in Firefox)
 
+<!--
 # Documentation
-__manifest.json declares 3 background scripts running on the same context , executed in order of declaration : 
-`scripts/transports-bundle.js`, `scripts/objects-bundle.js`, `scripts/bootloader.js`__
+__manifest.json declares `bundle.js` as background script:__
 
 * In `bootloader.js` any new URL loaded is detected on line 50. The new URL is then passed to the function `start()` 
 * In `start()` , variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` as an argument
@@ -31,4 +30,5 @@ __manifest.json declares 3 background scripts running on the same context , exec
 * The need for this injection of `redirect.js` is that a new URL cannot be loaded into the present tab from code in a background script. A URL in a new tab can be opened but not a URL in the same tab
 * Before `redirect.js` is injected, an object is initialised at line 23275 of `objects-bundle.js` containing `url.href` and `opentarget`. This object is passed to the context of `redirect.js`
 * `redirect.js` is executed and the new URL is loaded into the tab on line 3
+-->
 
