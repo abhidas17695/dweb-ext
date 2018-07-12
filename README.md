@@ -17,6 +17,15 @@
 * The page is redirected
 * Messages will be logged to console of background script (Click Debug button in Firefox)
 
+# Tests we expect the extension to pass
+* Go to https://www.iskme.org -> ends up on ISKme, not on dweb ! 
+* Go to https://dweb.archive.org -> should redirect to Archive front page
+* Go to https://dweb.archive.org/details/commute -> and it should end up on the commute page i.e. the rest of the URL makes it through
+* Go to https://dweb.archive.org/details/commute?verbose=true -> and any URL parameters should also be passed through
+* Go to https://dweb.blahblah.com and it should attempt to resolve, fail and end up with a standard attempt to load https://dweb.blahblah.com (which will fail)
+* Go to https://dweb.me/arc/archive.org/details/commute -> and should work fine, with no interception of URL
+* Reload any of these URLs and behavior is as expected - i.e. back at the same URL.
+
 <!--
 # Documentation
 __manifest.json declares `bundle.js` as background script:__
