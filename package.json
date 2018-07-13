@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "cids": "latest",
+    "ipfs": "latest",
+    "ipfs-unixfs": "^0.1.15",
+    "node-fetch": "latest",
+    "readable-stream": "latest",
+    "webtorrent": "^0.99.3",
+    "y-array": "latest",
+    "y-indexeddb": "latest",
+    "y-ipfs-connector": "latest",
+    "y-map": "latest",
+    "y-memory": "latest",
+    "y-text": "latest",
+    "yjs": "latest",
+    "custom-event": "latest",
+    "dweb-transports": "git+https://git@github.com/internetarchive/dweb-transports.git",
+    "libsodium-wrappers": "git+https://git@github.com/mitra42/libsodium.js.git",
+    "multihashes": "latest",
+    "sha.js": "latest",
+    "require": "latest"
+  },
+  "devDependencies": {
+    "browserify": "^14.5.0",
+    "watchify": "^3.11.0",
+    "chai": "latest",
+    "jsdom": "^11.11.0",
+    "y-leveldb": "latest"
+  },
+  "scripts": {
+    "build": "webpack --mode development"
+  }
+}

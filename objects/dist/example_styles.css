@@ -1,0 +1,60 @@
+/* Styles used for all the examples */
+
+/*Only in example_list */
+.props { padding-left: 0; }
+.said {display: block; border-bottom: 1px black solid;} /* Each item added to list in example_list */
+
+/* Only in example_academic */
+
+/* Only in example_objbrowser - via objbrowser_xx in SmartDict */
+.propurls {display: table; padding: 0px;} /* Ignore ul padding default which is large */
+.propurl {display: table-row} /* propurl inside propurls */
+
+/* Styles used for tables of properties, especially by example_objbrowser.js*/
+.prop {display:table-row; border: 1px dotted grey; } /*ignoring border*/
+.propname {display:table-cell; font-weight:bold;background-color:#cccccc;border: 1px dotted grey; padding-left:0.3em; padding-right:0.3em} /*width:15em */
+.propval {display:table-cell; background-color:#dddddd;border: 1px dotted grey; padding-left: 0.3em; padding-right: 0.3em;} /*width:15em;*/
+.propval span {white-space: pre;} /*Dont want white-space in e.g. img*/
+
+/*
+   Some specific styles used by multiple examples
+ */
+.floatright {margin: 0 0 3px 10px; float: right; clear: right; text-align: right} /* Grouped in top right corner */
+.floatleft {margin: 0 0 3px 10px;  clear: left; float: left; text-align: left} /* Grouped in top left corner */
+.floatright li {margin: 0 0 3px 10px; }
+.floatright ul {margin: 0 0 3px 10px; }
+.button { border: 1px black solid; background-color:#dddddd;  padding-bottom:0.1em;  display:inline;} /* Buttons */
+.displayedblock {border: 1px #e0e0e0 solid; background-color:#f0f0f0; box-shadow: 1px 1px 2px #cccccc; padding-top:0.1em; padding-bottom: 0.1em; margin-top: 10px; margin-bottom: 5px; display:inline-block;}
+.displayedblockheader {background-color:#e0e0e0; padding-top:0.1em; padding-bottom: 0.1em; margin-top: 3px; margin-bottom: 3px;}
+.inline {display:inline;}
+.hidden {display:none}
+.template {display: none}
+
+// Only in example_version
+.examples #vl_target {display: block;}
+
+// Only used in loginutils or things that us it
+.vertical_li {display: table-row; padding-top: 3px; padding-right: 0; margin: 0 0 3px 3px;}
+.examples #loginform {position: absolute; top: 0.5em; right: 1em; z-index:5; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; }
+.examples #registrationform {position: absolute; top: 1em; right: 1.5em; z-index:10; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; }/* z > loginform*/
+.examples #keychain {position: absolute; top: 0.5em; right: 1em; z-index:5; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; width: 450px;}
+.examples #keynew_form {position: absolute; top: 1em; right: 1.5em; z-index:7; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; width: 450px;}/*z > keychain*/
+.examples #locknew_form {position: absolute; top: 1em; right: 1.5em; z-index:7; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; width: 450px;}/*z > keychain*/
+.examples #lock_div {position: absolute; top: 0.5em; right: 1em; z-index:7; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; width: 450px;}/*z > keychain*/
+.examples #tokennew_form {position: absolute; top: 0.5em; right: 1em; z-index:10; background-color: #f0f0ff; border: 1px #e0e0e0 solid; padding: 5px; width: 450px; text-align:left;}/*z > lock_div*/
+
+//Used for on/offline indicator
+#statuselement { margin: 0 0 3px 10px; float: right; clear: right; text-align: right; position: relative; }  /* "floatright" Grouped in top right corner */
+#statuselement li {display: table-row; padding-top: 3px; padding-right: 0; margin: 0 0 3px 3px;}
+.dialogform .propval {white-space: pre; display:block; background-color:#dddddd;border: 1px dotted grey; padding-left: 0.3em; padding-top: 0.3em; padding-bottom: 0.1em; margin-top: 0.5em; margin-left: 0.5em; margin-right: 0.5em; margin-bottom: 0.5em;  }
+.dialogform .button { border: 1px black solid; background-color:#dddddd;  padding-bottom: 0.1em; padding-right: 0.3em; padding-left: 0.3em; margin-top: 0.5em; margin-left: 0.5em; margin-right: 0.5em; margin-bottom: 0.5em;}
+.iconopener {width:20px;}
+.inline_li {display:inline-grid; padding-left: 1em; padding-right: 1em;} /*A single login in a list of KeyChains or Keys */
+.inline_ul {display:inline; -webkit-padding-start: 0;} /*A List of KeyChains or Keys*/
+.keylist_icon {height: 12px; margin-left: 12px; margin-right: 3px;}
+
+.transportstatus0 {color: lawngreen}
+.transportstatus1 {color: red}
+.transportstatus2 {color: yellow}
+.transportstatus3 {color: black}
+.transportstatus4 {color: purple}
