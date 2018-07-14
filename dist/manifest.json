@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Dweb extension",
   "description": "Testing dweb ext",
-  "version": "1.5",
+  "version": "1.6",
   "homepage_url": "https://archive.org/",
   "icons": { 
         "16":"images/icon.png", 

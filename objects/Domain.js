@@ -174,7 +174,6 @@ class Leaf extends SmartDict {
                         if (search_supplied) url.search = url.search + (url.search ? '&' : "") + search_supplied;
                         if (verbose) url.search = url.search + (url.search ? '&' : "") + 'verbose=true';
                         if (verbose) console.log("Bootstrap loading url:", url.href);
-                        //window.open(url.href, opentarget); //if opentarget is blank then I think should end this script.
                         chrome.tabs.query({active:true,currentWindow:true},function(tabs){
                             chrome.tabs.update(tabs[0].id,{url:url.href}, function(){});
                         });

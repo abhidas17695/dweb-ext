@@ -29,12 +29,25 @@
 # Steps to build the extension
 
 * Download or clone the repo 
-* Go to the folder objects and run `npm install`
-* Go to the folder transports and run `npm install`
 * Run `npm install` on the root folder (the folder containing web.config)
 * Run `npm run-script build` on the root folder
 * The bundled js file is to be found in the folder dist
 * Please note that the folder scripts in dist is empty currently
+
+# Steps to sync the repo with the original dweb-objects and dweb-transports
+
+* Download the repos from https://github.com/internetarchive/dweb-objects and https://github.com/internetarchive/dweb-transports
+* Rename the folders to objects and transports
+* In objects folder in file Domain.js at line 177 replace the code with `chrome.tabs.query({active:true,currentWindow:true},function(tabs){
+    chrome.tabs.update(tabs[0].id,{url:url.href}, function(){});
+});`
+* Rename package.json of objects folder to package-objects.json and do the same for transports folder.
+* Copy these 2 files and paste in the root folder
+* Run `npm install -g package-json-merge`
+* Run `package-json-merge package-objects.json package-transports.json > package.json`
+* Open the newly created package.json file and declare webpack as a devDependency
+* Run `npm install`
+* Run `npm run-script build` on the root folder to see build the updated bundle.js
 
 # Documentation
 __manifest.json declares `bundle.js` as background script:__
@@ -43,6 +56,6 @@ __manifest.json declares `bundle.js` as background script:__
 * In `start()` , variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` as an argument
 * In `start()` the `require` caches are cleared. This is to prevent `Signature not verified error`.
 * In `main()` the name is passed to p_bootname() -> Domain.p_resolveAndBoot which walks the Domain tree retrieving records via IPFS or HTTP.
-* Finally in Leaf.p_boot (line 179 of `objects/Domain.js`) the new HTML is ready to be loaded
+* Finally in Leaf.p_boot (line 178 of `objects/Domain.js`) the new HTML is ready to be loaded
 * The URL of the new HTML is `url.href`
 
