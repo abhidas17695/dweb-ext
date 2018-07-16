@@ -15,7 +15,7 @@
 # Instructions for testing the extension
 * Go to https://www.iskme.org/
 * The page is redirected
-* Messages will be logged to console of background script (Click Debug button in Firefox)
+* Messages will be logged to console of background script (Click Debug button in Firefox or on Chrome: chrome://extensions > dweb-ext > "background page" > console")
 
 # Tests we expect the extension to pass
 * Go to https://www.iskme.org -> ends up on ISKme, not on dweb ! 
