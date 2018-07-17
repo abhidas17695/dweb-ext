@@ -58,7 +58,9 @@ function statusupdate(args) {
         if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0)){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
+            statusupdate("URL intercepted is "+url);
             main(url).then(function(resolve){
+                statusupdate("URL to load is "+DwebObjects.Domain.newURL);
                 changeURL(details.tabId,DwebObjects.Domain.newURL);
             },function(reject){});
             
