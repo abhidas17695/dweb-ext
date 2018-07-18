@@ -34,7 +34,7 @@ function statusupdate(args) {
         //document.getElementById("urlorname").value = name;
         statusupdate("Resolving name: ",name,);   // Appears after loading
         try {
-            await DwebObjects.Domain.p_resolveAndBoot(name,true,id, {search_supplied, verbose})
+            await DwebObjects.Domain.p_resolveAndBoot(name, {search_supplied, openChromeTab: id, verbose})
         } catch(err) {  // If cant resolve to leaf, or boot fails
             console.error("Got error",err);
             statusupdate(err.message);
