@@ -3,7 +3,7 @@ function statusupdate(args) {
         //statusdiv = document.getElementById("statusdiv");
         //statusdiv.appendChild(DwebObjects.utils.createElement("span", {}, ...arguments));
     }
-    async function main(url) {
+    async function main(url,id) {
         await DwebTransports.p_connect({
             statuselement: document.getElementById("statuselement"),
             transports: searchparams.getAll("transport")
@@ -23,18 +23,18 @@ function statusupdate(args) {
                 name = ["arc", pathname].join("");                              // arc/archive.org/details/commute
             } else {
                 statusupdate("Unable to bootstrap ", orighref, " unrecognized pattern");
-                return false;  // have to change how promise is resolved or rejected
             }
             const search_supplied = url.search.slice(1); // Skip initial ?
-            await p_bootname(name, {search_supplied});
-            return true; // have to change how promise is resolved or rejected
+            await p_bootname(name, id,{search_supplied});
+            
+
         }
     }
-    async function p_bootname(name, {search_supplied=undefined}={}) {
+    async function p_bootname(name, id,{search_supplied=undefined}={}) {
         //document.getElementById("urlorname").value = name;
         statusupdate("Resolving name: ",name,);   // Appears after loading
         try {
-            await DwebObjects.Domain.p_resolveAndBoot(name, {search_supplied, verbose})
+            await DwebObjects.Domain.p_resolveAndBoot(name,true,id, {search_supplied, verbose})
         } catch(err) {  // If cant resolve to leaf, or boot fails
             console.error("Got error",err);
             statusupdate(err.message);
@@ -53,17 +53,13 @@ function statusupdate(args) {
     var searchparams = null;
     var verbose = null;
     chrome.webRequest.onBeforeRequest.addListener(function(details) {
-        var url=details.url;
-        //var url="https://dweb.archive.org";
-        if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0)){
+        //var url=details.url;
+        var url="https://dweb.archive.org";
+        if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0) && !(details.url.startsWith("chrome"))){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
-            main(url).then(function(resolve){
-                statusupdate("URL to load is "+DwebObjects.Domain.newURL);
-                changeURL(details.tabId,DwebObjects.Domain.newURL);
-            },function(reject){});
-            
+            main(url,details.tabId);
         }
     }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
 

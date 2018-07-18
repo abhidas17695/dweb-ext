@@ -38,10 +38,9 @@
 # Documentation
 __manifest.json declares `dweb-transports-bundle.js`,`dweb-objects-bundle.js` and `bootloader.js` as background scripts:__
 * In `bootloader.js` any new URL loaded is detected on line 55. 
-* Variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` as an argument
-* `main()` is an asynchronous function.If the promise is resolved then at line 62 of `bootloader.js` the new URL is loaded
-* In `main()` the name is passed to p_bootname() -> Domain.p_resolveAndBoot which walks the Domain tree retrieving records via IPFS or HTTP.
+* Variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` and `tabId` as an argument
+* In `main()` the name, a flag called openChrome (initialised to true) and tabId are passed to p_bootname() -> Domain.p_resolveAndBoot which walks the Domain tree retrieving records via IPFS or HTTP.
 * Finally in Leaf.p_boot (line 178 of `dweb-objects/Domain.js`) the new HTML is ready to be loaded. The URL of this new web page is assigned to Domain.newURL
 * The URL of the new HTML is `url.href`
-* In `bootloader.js` this new URL is accessed as `DwebObjects.Domain.newURL`
+* In line 178 of Domain.js, if openChrome is true, the new URL is loaded
 
