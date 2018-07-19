@@ -4,10 +4,6 @@ function statusupdate(args) {
         //statusdiv.appendChild(DwebObjects.utils.createElement("span", {}, ...arguments));
     }
     async function main(url,id) {
-        await DwebTransports.p_connect({
-            statuselement: document.getElementById("statuselement"),
-            transports: searchparams.getAll("transport")
-        });
         let orighref = searchparams.get("url") || url;
         if (!orighref.startsWith("file:///")) {
             statusupdate("Loading URL: ", orighref);
@@ -53,8 +49,8 @@ function statusupdate(args) {
     var searchparams = null;
     var verbose = null;
     chrome.webRequest.onBeforeRequest.addListener(function(details) {
-        //var url=details.url;
-        var url="https://dweb.archive.org";
+        var url=details.url;
+        //var url="https://dweb.archive.org";
         if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0) && !(details.url.startsWith("chrome"))){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
@@ -64,4 +60,5 @@ function statusupdate(args) {
     }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
 
 
+    DwebTransports.p_connect({ }); // Asynchronous
 
