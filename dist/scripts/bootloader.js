@@ -57,15 +57,20 @@ function statusupdate(args) {
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
-            if(startTransportsAtLoad==false && transportsLoaded==false){
-                DwebTransports.p_connect({ }); // Asynchronous  
+            if(!transportsLoaded){
+                DwebTransports.p_connect({ }).then(function(resolve){
+                    main(url,details.tabId);
+                    transportsLoaded=true;
+                }); 
+            }else{
+                main(url,details.tabId);
                 transportsLoaded=true;
             }
-            main(url,details.tabId);
+            
         }
     }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
 
-    if(startTransportsAtLoad==true && transportsLoaded==false){
+    if(startTransportsAtLoad){
         DwebTransports.p_connect({ }); // Asynchronous
         transportsLoaded=true;
      }
