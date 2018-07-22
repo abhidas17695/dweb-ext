@@ -48,17 +48,25 @@ function statusupdate(args) {
     // This is only useful until we have the server returning this file for anything under dweb.archive.org
     var searchparams = null;
     var verbose = null;
+    const startTransportsAtLoad = false;
+    var transportsLoaded=false;
     chrome.webRequest.onBeforeRequest.addListener(function(details) {
         var url=details.url;
         //var url="https://dweb.archive.org";
-        if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && (url.indexOf("dweb.")>=0) && !(details.url.startsWith("chrome"))){
+        if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && details.url.startsWith("http") && (url.indexOf("dweb.")>=0) && !(details.url.startsWith("chrome"))){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
+            if(startTransportsAtLoad==false && transportsLoaded==false){
+                DwebTransports.p_connect({ }); // Asynchronous  
+                transportsLoaded=true;
+            }
             main(url,details.tabId);
         }
     }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
 
-
-    DwebTransports.p_connect({ }); // Asynchronous
+    if(startTransportsAtLoad==true && transportsLoaded==false){
+        DwebTransports.p_connect({ }); // Asynchronous
+        transportsLoaded=true;
+     }
 

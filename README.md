@@ -3,8 +3,7 @@
 * Unzip the downloaded folder
 * Go to chrome://extensions in Chrome and turn on 'Developer mode'
 * Click on 'Load unpacked'
-* Select the folder containing dist of the unzipped folder
-
+* Select the folder dist
 # Instructions for loading the extension in Firefox
 * Download or clone this repo
 * Unzip the downloaded folder
