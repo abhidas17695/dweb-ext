@@ -50,25 +50,24 @@ function statusupdate(args) {
     var verbose = null;
     const startTransportsAtLoad = false;
     var transportsLoaded=false;
-    chrome.webRequest.onBeforeRequest.addListener(function(details) {
-        var url=details.url;
+    chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
+        var url=changeInfo.url;
         //var url="https://dweb.archive.org";
-        if((typeof details.url)!='undefined' && (details.url.indexOf("dweb.me")<0) && !(url.indexOf("dweb.me")>=0)&& url.startsWith("http") && details.url.startsWith("http") && (url.indexOf("dweb.")>=0) && !(details.url.startsWith("chrome"))){
+        if((typeof url)!='undefined' && (url.indexOf("dweb.me")<0) && url.startsWith("http") && !(url.startsWith("chrome"))){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
             if(!transportsLoaded){
                 transportsLoaded=true;
                 DwebTransports.p_connect({ }).then(function(resolve){
-                    main(url,details.tabId);
+                    main(url,tabId);
                 }); 
             }else{
-                main(url,details.tabId);
+                main(url,tabId);
             }
             
         }
-    }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
-
+    });
     if(startTransportsAtLoad){
         transportsLoaded=true;
         DwebTransports.p_connect({ }); // Asynchronous
