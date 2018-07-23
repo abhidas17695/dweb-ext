@@ -58,20 +58,19 @@ function statusupdate(args) {
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
             if(!transportsLoaded){
+                transportsLoaded=true;
                 DwebTransports.p_connect({ }).then(function(resolve){
                     main(url,details.tabId);
-                    transportsLoaded=true;
                 }); 
             }else{
                 main(url,details.tabId);
-                transportsLoaded=true;
             }
             
         }
     }, {urls: ["<all_urls>"], types: ["main_frame"]},['blocking']);
 
     if(startTransportsAtLoad){
-        DwebTransports.p_connect({ }); // Asynchronous
         transportsLoaded=true;
+        DwebTransports.p_connect({ }); // Asynchronous
      }
 
