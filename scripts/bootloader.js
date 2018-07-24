@@ -41,9 +41,23 @@ function statusupdate(args) {
         let nameandsearch = document.getElementById(field).value.split('?')
         return await p_bootname(nameandsearch, {});
     }
-    function changeURL(id,url){
-        chrome.tabs.update(id,{url:url}, function(){});
-    }
+//    function bootloader(tabId,changeInfo,tab){
+//        var url=changeInfo.url;
+//        //var url="https://dweb.archive.org";
+//            searchparams = new URL(url).searchParams;
+//            verbose = searchparams.get("verbose");
+//            statusupdate("URL intercepted is "+url);
+//            if(!transportsLoaded){
+//                transportsLoaded=true;
+//                DwebTransports.p_connect({ }).then(function(resolve){
+//                    main(url,tabId);
+//                }); 
+//            }else{
+//                main(url,tabId);
+//            }
+//            
+//        
+//    }
     // Next few lines need explaining!  If passed an extra parameter url= then it will use that as the URL instead of ...bootloader.html
     // This is only useful until we have the server returning this file for anything under dweb.archive.org
     var searchparams = null;
@@ -66,6 +80,18 @@ function statusupdate(args) {
                 main(url,tabId);
             }
             
+        }else{
+            if (changeInfo.status == "complete") {
+                chrome.tabs.get(tabId, function(tab) {
+                    chrome.storage.sync.get(['auto_archive'],function(event){
+                    if(event.auto_archive==true){
+                        auto_save(tab.id);
+                    }else{
+                        console.log("Cant be Archived");
+                    }
+                    });
+                });
+            }
         }
     });
     if(startTransportsAtLoad){
