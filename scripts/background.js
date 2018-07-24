@@ -338,13 +338,11 @@ chrome.webRequest.onCompleted.addListener(function(details) {
       }
       if(details.tabId >0 ){
         chrome.tabs.query({currentWindow:true},function(tabs){
-            if(tabs.indexOf(details.tabId)>=0){
+            var tabsArr=tabs.map(tab => tab.id);
+            if(tabsArr.indexOf(details.tabId)>=0){
                 chrome.tabs.get(details.tabId, function(tab) {
-                if((typeof tab)=='undefined'){
-              
-                }else{
                     tabIsReady(tab.incognito);  
-                }
+                
                 });
             }
         })
