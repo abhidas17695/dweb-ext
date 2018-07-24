@@ -53,7 +53,7 @@ function statusupdate(args) {
     chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
         var url=changeInfo.url;
         //var url="https://dweb.archive.org";
-        if((typeof url)!='undefined' && (url.indexOf("dweb.me")<0) && url.startsWith("http") && !(url.startsWith("chrome"))){
+        if((typeof url)!='undefined' && (url.indexOf("dweb.me")<0) && url.startsWith("http") && !(url.startsWith("chrome")) && url.indexOf("dweb.")>=0){
             searchparams = new URL(url).searchParams;
             verbose = searchparams.get("verbose");
             statusupdate("URL intercepted is "+url);
