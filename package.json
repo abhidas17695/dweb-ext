@@ -1,0 +1,28 @@
+{
+  "author": {
+    "name": "Abhishek Das",
+    "email": "abhidas@archive.org"
+  },
+  "browser": {
+    "node-fetch": false
+  },
+  "dependencies": {
+    "cpx": "latest",
+    "download-git-repo": "latest",
+    "glob-watcher": "^5.0.1"
+  },
+  "description": "Internet Archive Decentralized Web Ext",
+  "keywords": [],
+  "license": "AGPL-3.0",
+  "name": "dweb-ext",
+  "scripts": {
+    "postinstall": "node download && cpx dweb-objects/dist/dweb-objects-bundle.js dist/scripts && cpx dweb-transports/dist/dweb-transports-bundle.js dist/scripts",
+    "update": "node download && cpx dweb-objects/dist/dweb-objects-bundle.js dist/scripts && cpx dweb-transports/dist/dweb-transports-bundle.js dist/scripts",
+    "watch": "node watch",
+    "test": "node ./test.js",
+    "build": "webpack --mode development",
+    "help": "echo 'test (test it), webpack (build it), setuphttp (link files for http access);'",
+    "setuphttp": "ln -s ../node_modules/dweb-transports/dist/dweb-transports-bundle.js dist;"
+  },
+  "version": "0.1.0"
+}

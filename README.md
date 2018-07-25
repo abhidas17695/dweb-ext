@@ -12,7 +12,7 @@
 * Select manifest.json from the folder dist
 
 # Instructions for testing the extension
-* Go to https://www.iskme.org/
+* Go to http://dweb.archive.org
 * The page is redirected
 * Messages will be logged to console of background script (Click Debug button in Firefox or on Chrome: chrome://extensions > dweb-ext > "background page" > console")
 
@@ -27,12 +27,9 @@
 
 # Steps to sync the repo with the original dweb-objects and dweb-transports
 
-* Download the repos from https://github.com/internetarchive/dweb-objects and https://github.com/internetarchive/dweb-transports
-* Run `npm install` on both folders
-* In dweb-objects folder in file `Domain.js` at line 177 replace the code with `Domain.newURL=url.href;`
-* Run `npm run-script build` on dweb-objects
-* Copy `dweb-objects-bundle.js` and `dweb-transports-bundle.js` from the folder dist of both dweb-objects and dweb-transports and paste in the folder dist of the extension folder
-
+* Run `npm install` to install dependencies and to download dweb-transports and dweb-objects. The bundles are automatically copied to dist/scripts.
+* To just download dweb-transports and dweb-objects without installing dependencies all over again , run `npm run-script update`. This will download dweb-transports and dweb-objects and copy the bundles to dist/scripts
+* If you want to edit source files of either dweb-objects or dweb-transports run `npm run-script watch` on the root folder of this repo. This will watch the bundles of both dweb-objects and dweb-transports and copy the updated files to dist/scripts
 
 # Documentation
 __manifest.json declares `dweb-transports-bundle.js`,`dweb-objects-bundle.js` and `bootloader.js` as background scripts:__
