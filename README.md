@@ -36,7 +36,7 @@ Select manifest.json from the folder dist-dweb/dist to load dweb extension
 * dist-combo is the folder containg the wayback-machine-chrome extension + dweb feature
 
 # Documentation
-* cpx , fs and download-git-repo are declared as dependencies
+* cpx , fs and nodegit are declared as dependencies
 * After installation of dependencies `node download` is run
 * download.js downloads abhidas17695/dweb-ext and internetarchive/wayback-machine-chrome into dist-dweb and dist-combo respectively. 
 * dist-dweb/dist is the standalone dweb extension
