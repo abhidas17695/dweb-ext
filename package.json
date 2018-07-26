@@ -9,7 +9,7 @@
   "dependencies": {
     "cpx": "latest",
     "fs": "latest",
-    "nodegit": "latest"
+    "download-git-repo": "latest"
   },
   "description": "Internet Archive Decentralized Web Ext and WB Ext builder",
   "keywords": [],
