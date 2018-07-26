@@ -22,5 +22,9 @@
     "help": "echo 'test (test it), webpack (build it), setuphttp (link files for http access);'",
     "setuphttp": "ln -s ../node_modules/dweb-transports/dist/dweb-transports-bundle.js dist;"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/internetarchive/dweb-transports.git"
+  },
   "version": "0.1.0"
 }
