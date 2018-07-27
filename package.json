@@ -8,21 +8,23 @@
   },
   "dependencies": {
     "cpx": "latest",
-    "download-git-repo": "latest",
-    "glob-watcher": "^5.0.1"
+    "fs": "latest",
+    "download-git-repo": "latest"
   },
-  "description": "Internet Archive Decentralized Web Ext",
+  "description": "Internet Archive Decentralized Web Ext and WB Ext builder",
   "keywords": [],
   "license": "AGPL-3.0",
-  "name": "dweb-ext",
+  "name": "dweb-ext-builder",
   "scripts": {
-    "postinstall": "node download && cpx dweb-objects/dist/dweb-objects-bundle.js dist/scripts && cpx dweb-transports/dist/dweb-transports-bundle.js dist/scripts",
-    "update": "node download && cpx dweb-objects/dist/dweb-objects-bundle.js dist/scripts && cpx dweb-transports/dist/dweb-transports-bundle.js dist/scripts",
-    "watch": "node watch",
+    "postinstall": "node download && cpx dweb-objects/dist/dweb-objects-bundle.js dist-dweb/scripts && cpx dweb-transports/dist/dweb-transports-bundle.js dist-dweb/scripts && cpx dist-dweb/scripts/dweb-objects-bundle.js dist-combo/scripts && cpx dist-dweb/scripts/dweb-transports-bundle.js dist-combo/scripts && cpx dist-dweb/scripts/bootloader.js dist-combo/scripts && node changemanifest",
     "test": "node ./test.js",
     "build": "webpack --mode development",
     "help": "echo 'test (test it), webpack (build it), setuphttp (link files for http access);'",
     "setuphttp": "ln -s ../node_modules/dweb-transports/dist/dweb-transports-bundle.js dist;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/abhidas17695/dweb-ext.git"
   },
   "version": "0.1.0"
 }

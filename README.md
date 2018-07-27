@@ -1,15 +1,19 @@
 # Instructions for loading the extension in Chrome
 * Download or clone this repo
 * Unzip the downloaded folder
+* Build the repos as instructed below 
 * Go to chrome://extensions in Chrome and turn on 'Developer mode'
 * Click on 'Load unpacked'
-* Select the folder dist
+* Select the folder dist-combo to load the combo extension
+* Select the fiolder dist-dweb to load the dweb extension
 # Instructions for loading the extension in Firefox
 * Download or clone this repo
 * Unzip the downloaded folder
+* Build the repos as instructed below
 * Go to about:debugging in Firefox and turn on 'Enable add-on debugging' 
 * Click on 'Load temporary Add-on'
-* Select manifest.json from the folder dist
+* Select manifest.json from the folder dist-combo to load combo extension
+Select manifest.json from the folder dist-dweb to load dweb extension
 
 # Instructions for testing the extension
 * Go to http://dweb.archive.org
@@ -25,18 +29,16 @@
 * Go to https://dweb.me/arc/archive.org/details/commute -> and should work fine, with no interception of URL
 * Reload any of these URLs and behavior is as expected - i.e. back at the same URL.
 
-# Steps to sync the repo with the original dweb-objects and dweb-transports
+# Steps to build the two repos
 
-* Run `npm install` to install dependencies and to download dweb-transports and dweb-objects. The bundles are automatically copied to dist/scripts.
-* To just download dweb-transports and dweb-objects without installing dependencies all over again , run `npm run-script update`. This will download dweb-transports and dweb-objects and copy the bundles to dist/scripts
-* If you want to edit source files of either dweb-objects or dweb-transports run `npm run-script watch` on the root folder of this repo. This will watch the bundles of both dweb-objects and dweb-transports and copy the updated files to dist/scripts
+* Run `npm install` to install dependencies and to download abhidas17695/wayback-machine-chrome, .
+* dist-dweb is the folder containing the standalone dweb extension
+* dist-combo is the folder containg the wayback-machine-chrome extension + dweb feature
 
 # Documentation
-__manifest.json declares `dweb-transports-bundle.js`,`dweb-objects-bundle.js` and `bootloader.js` as background scripts:__
-* In `bootloader.js` any new URL loaded is detected on line 55. 
-* Variables `searchParams` and `verbose` are initialised. If the URL is not a Chrome internal page and if the URL starts with either https://dweb or http://dweb , `main()` is called with `url` and `tabId` as an argument
-* In `main()` the name, a flag called openChrome (initialised to true) and tabId are passed to p_bootname() -> Domain.p_resolveAndBoot which walks the Domain tree retrieving records via IPFS or HTTP.
-* Finally in Leaf.p_boot (line 178 of `dweb-objects/Domain.js`) the new HTML is ready to be loaded. The URL of this new web page is assigned to Domain.newURL
-* The URL of the new HTML is `url.href`
-* In line 178 of Domain.js, if openChrome is true, the new URL is loaded
+* cpx , fs and download-git-repo are declared as dependencies
+* After installation of dependencies `node download` is run
+* download.js downloads abhidas17695/wayback-machine-chrome into dist-combo , internetarchive/dweb-transports and internetarchive/dweb-objects.
+* To build combo extension the 2 bundles and bootloader.js are copied from dist-dweb to dist-combo 
+* manifest.json of dist-combo is appropriately edited by changemanifest.json
 

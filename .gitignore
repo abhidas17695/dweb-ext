@@ -1,3 +1,4 @@
 node_modules
-dweb-objects/node_modules
-dweb-transports/node_modules
+dweb-objects
+dweb-transports
+dist-combo
