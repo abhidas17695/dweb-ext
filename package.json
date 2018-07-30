@@ -20,7 +20,7 @@
     "test": "node ./test.js",
     "build": "webpack --mode development",
     "help": "echo 'test (test it), webpack (build it), setuphttp (link files for http access);'",
-    "setuphttp": "ln -s ../node_modules/dweb-transports/dist/dweb-transports-bundle.js dist;"
+    "setuphttp": "ln -s ../node_modules/@internetarchive/dweb-transports/dist/dweb-transports-bundle.js dist;"
   },
   "repository": {
     "type": "git",
